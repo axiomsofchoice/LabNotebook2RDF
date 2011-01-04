@@ -1,2 +1,3 @@
 # For now ignoring this file which can be obtained from http://biolab.isis.rl.ac.uk/camerons_labblog/index.xml
+# The only local change is to add the schema location
 /etc/index.xml
