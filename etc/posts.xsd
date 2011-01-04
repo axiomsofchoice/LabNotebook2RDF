@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://biolab.isis.rl.ac.uk/camerons_labblog" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:lnb="http://biolab.isis.rl.ac.uk/camerons_labblog">
+
+    <element name="posts" type="lnb:PostsType"></element>
+    
+    <element name="post" type="lnb:PostType"></element>
+    
+    <complexType name="PostsType">
+    	<sequence>
+    		<element name="post" type="string" maxOccurs="unbounded" minOccurs="0"></element>
+    	</sequence>
+    	<attribute name="to" type="dateTime"></attribute>
+    	<attribute name="from" type="dateTime"></attribute>
+    </complexType>
+    
+
+
+    <complexType name="PostType"></complexType>
+</schema>
