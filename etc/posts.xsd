@@ -26,12 +26,22 @@
     		<element name="timestamp" type="dateTime"></element>
     	</sequence>
     </complexType>
-    
-
-
 
     <simpleType name="SectionType">
+    	<annotation>
+    		<documentation>
+    		This is based on an inspection of the xml source using
+    		the following command-line technique:
+
+			$ egrep "^.*&lt;section&gt;.+&lt;/section&gt;.*$" ./index.xml | sed 's/.*&lt;section&gt;\(.*\)&lt;\/section&gt;.*/\1/g' | sort -u
+    		</documentation>
+    	</annotation>
     	<restriction base="string">
+    		<enumeration value="Data" />
+    		<enumeration value="Materials" />
+    		<enumeration value="Note" />
+    		<enumeration value="Procedure" />
+    		<enumeration value="Procedures" />
     		<enumeration value="Templates" />
     	</restriction>
     </simpleType>
