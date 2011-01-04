@@ -24,6 +24,11 @@
     		<element name="html" type="string"></element>
     		<element name="datestamp" type="dateTime"></element>
     		<element name="timestamp" type="dateTime"></element>
+    		<element name="blog" type="lnb:BlogType"></element>
+    		<element name="key" type="lnb:KeyType"></element>
+    		<element name="links" type="lnb:LinksType"></element>
+    		<element name="format" type="lnb:FormatsType"></element>
+    		<element name="comments" type="lnb:CommentsType"></element>
     	</sequence>
     </complexType>
 
@@ -61,9 +66,28 @@
 
 
 
-    <complexType name="BlogType"></complexType>
-
-    <complexType name="KeyType"></complexType>
+    <simpleType name="BlogType">
+    	<annotation>
+    		<documentation>
+    		The only value found for this 5, hence this restriction.
+    		</documentation>
+    	</annotation>
+    	<restriction base="int">
+			<minInclusive value="5"/>
+			<maxInclusive value="5"/>
+    	</restriction>
+    </simpleType>
+    
+    <simpleType name="KeyType">
+    	<annotation>
+    		<documentation>
+    		Assumes this is some sort of MD5 checksum?
+    		</documentation>
+    	</annotation>
+    	<restriction base="string">
+    		<pattern value="[0-9a-f]{32}"/>
+    	</restriction>
+    </simpleType>
 
     <complexType name="LinksType"></complexType>
 
