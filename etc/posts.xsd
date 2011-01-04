@@ -2,12 +2,10 @@
 <schema targetNamespace="http://biolab.isis.rl.ac.uk/camerons_labblog" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:lnb="http://biolab.isis.rl.ac.uk/camerons_labblog">
 
     <element name="posts" type="lnb:PostsType"></element>
-    
-    <element name="post" type="lnb:PostType"></element>
-    
+
     <complexType name="PostsType">
     	<sequence>
-    		<element name="post" type="string" maxOccurs="unbounded" minOccurs="0"></element>
+    		<element name="post" type="lnb:PostType" maxOccurs="unbounded" minOccurs="0"></element>
     	</sequence>
     	<attribute name="to" type="dateTime"></attribute>
     	<attribute name="from" type="dateTime"></attribute>
@@ -15,5 +13,63 @@
     
 
 
-    <complexType name="PostType"></complexType>
+    <complexType name="PostType">
+    	<sequence>
+    		<element name="id" type="positiveInteger"></element>
+    		<element name="rid" type="positiveInteger"></element>
+    		<element name="title" type="string"></element>
+    		<element name="section" type="lnb:SectionType"></element>
+    		<element name="author" type="lnb:AuthorType"></element>
+    		<element name="content" type="string"></element>
+    		<element name="html" type="string"></element>
+    		<element name="datestamp" type="dateTime"></element>
+    		<element name="timestamp" type="dateTime"></element>
+    	</sequence>
+    </complexType>
+    
+
+
+
+    <simpleType name="SectionType">
+    	<restriction base="string">
+    		<enumeration value="Templates" />
+    	</restriction>
+    </simpleType>
+
+    <complexType name="AuthorType">
+    	<sequence>
+    		<element name="username" type="lnb:UsernameType"
+    			maxOccurs="1" minOccurs="1">
+    		</element>
+    		<element name="name" type="string" maxOccurs="1" minOccurs="1"></element>
+    	</sequence>
+    </complexType>
+    
+    <complexType name="ContentType"></complexType>
+
+    <complexType name="HtmlType"></complexType>
+
+
+
+    <complexType name="BlogType"></complexType>
+
+    <complexType name="KeyType"></complexType>
+
+    <complexType name="LinksType"></complexType>
+
+    <complexType name="FormatsType"></complexType>
+
+    <complexType name="CommentsType"></complexType>
+
+    <simpleType name="UsernameType">
+    	<annotation>
+    		<documentation>
+    		This is based on a username following the pattern:
+    		cameron.neylon.myopenid.com
+    		</documentation>
+    	</annotation>
+    	<restriction base="string">
+    		<pattern value="([a-z]+\.)*[a-z]+"/>
+    	</restriction>
+    </simpleType>
 </schema>
