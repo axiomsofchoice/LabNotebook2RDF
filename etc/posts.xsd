@@ -10,10 +10,13 @@
     	<attribute name="to" type="dateTime"></attribute>
     	<attribute name="from" type="dateTime"></attribute>
     </complexType>
-    
-
 
     <complexType name="PostType">
+    	<annotation>
+    		<documentation>
+    		For some reason &lt;attached_data&gt; doesn't always appear?
+    		</documentation>
+    	</annotation>
     	<sequence>
     		<element name="id" type="positiveInteger"></element>
     		<element name="rid" type="positiveInteger"></element>
@@ -26,8 +29,13 @@
     		<element name="timestamp" type="dateTime"></element>
     		<element name="blog" type="lnb:BlogType"></element>
     		<element name="key" type="lnb:KeyType"></element>
-    		<element name="links" type="lnb:LinksType"></element>
-    		<element name="format" type="lnb:FormatsType"></element>
+    		<element name="metadata" type="lnb:MetadataType"
+    			maxOccurs="1" minOccurs="0">
+    		</element>
+            <element name="attached_data" type="lnb:Attached_dataType" maxOccurs="1" minOccurs="0">
+    		</element>
+            <element name="links" type="lnb:LinksType"></element>
+    		<element name="formats" type="lnb:FormatsType"></element>
     		<element name="comments" type="lnb:CommentsType"></element>
     	</sequence>
     </complexType>
@@ -51,6 +59,12 @@
     	</restriction>
     </simpleType>
 
+    <complexType name="Attached_dataType">
+    	<sequence>
+    		<element name="data" type="anyURI" maxOccurs="unbounded" minOccurs="0"></element>
+    	</sequence>
+    </complexType>
+
     <complexType name="AuthorType">
     	<sequence>
     		<element name="username" type="lnb:UsernameType"
@@ -60,9 +74,23 @@
     	</sequence>
     </complexType>
     
-    <complexType name="ContentType"></complexType>
+    <complexType name="ContentType">
+    	<annotation>
+    		<documentation>
+			&lt;content&gt; elements all seem to contain CDATA sections
+			so the best we can say about them is that they are complexTypes
+    		</documentation>
+    	</annotation>
+    </complexType>
 
-    <complexType name="HtmlType"></complexType>
+    <complexType name="HtmlType">
+    	<annotation>
+    		<documentation>
+			&lt;html&gt; elements all seem to contain CDATA sections
+			so the best we can say about them is that they are complexTypes
+    		</documentation>
+    	</annotation>
+    </complexType>
 
 
 
@@ -89,10 +117,13 @@
     	</restriction>
     </simpleType>
 
-    <complexType name="LinksType"></complexType>
 
-    <complexType name="FormatsType"></complexType>
-
+    <complexType name="FormatsType">
+    	<sequence>
+    		<element name="format" type="lnb:FormatType" maxOccurs="unbounded" minOccurs="0"></element>
+    	</sequence>
+    </complexType>
+    
     <complexType name="CommentsType"></complexType>
 
     <simpleType name="UsernameType">
@@ -106,4 +137,188 @@
     		<pattern value="([a-z]+\.)*[a-z]+"/>
     	</restriction>
     </simpleType>
+
+    <complexType name="LinksType">
+    	<sequence>
+    		<element name="uri" type="anyURI"></element>
+    		<element name="permalink" type="anyURI"></element>
+    	</sequence>
+    </complexType>
+
+    <simpleType name="DatatypeType">
+    	<annotation>
+    		<documentation>
+    		This is based on an inspection of the xml source using
+    		the following command-line technique:
+
+			$ egrep "^.*&lt;data_type&gt;.+&lt;/data_type&gt;.*$" ./index.xml | sed 's/.*&lt;data_type&gt;\(.*\)&lt;\/data_type&gt;.*/\1/g' | sort -u
+    		</documentation>
+    	</annotation>
+    	<restriction base="string">
+    		<enumeration value="SANS" />
+    		<enumeration value="SANS_LOQ" />
+    		<enumeration value="SANS_SANS2d" />
+    		<enumeration value="SAXS_Diamond" />
+    		<enumeration value="SAXS_Lab" />
+    		<enumeration value="Sequence_DNA" />
+    		<enumeration value="UV-VIS" />
+    		<enumeration value="UV-Vis" />
+    	</restriction>
+    </simpleType>
+
+    <simpleType name="InstrumentType">
+    	<annotation>
+    		<documentation>
+    		This is based on an inspection of the xml source using
+    		the following command-line technique:
+
+			$ egrep "^.*&lt;instrument&gt;.+&lt;/instrument&gt;.*$" ./index.xml | sed 's/.*&lt;instrument&gt;\(.*\)&lt;\/instrument&gt;.*/\1/g' | sort -u
+    		</documentation>
+    	</annotation>
+    	<restriction base="string">
+    		<enumeration value="I22" />
+    		<enumeration value="LOQ" />
+    		<enumeration value="SANS2D" />
+    		<enumeration value="SANS2d" />
+    		<enumeration value="SAXSess_Bath" />
+    	</restriction>
+    </simpleType>
+    
+    <simpleType name="ProjectType">
+    	<annotation>
+    		<documentation>
+    		This is based on an inspection of the xml source using
+    		the following command-line technique:
+
+			$ egrep "^.*&lt;project&gt;.+&lt;/project&gt;.*$" ./index.xml | sed 's/.*&lt;project&gt;\(.*\)&lt;\/project&gt;.*/\1/g' | sort -u
+    		</documentation>
+    	</annotation>
+    	<restriction base="string">
+    		<enumeration value="Data_analysis" />
+    		<enumeration value="Frey-King_Surfactants" />
+    		<enumeration value="GluR0" />
+    		<enumeration value="Glur0" />
+    		<enumeration value="GlurO" />
+    		<enumeration value="JHL" />
+    		<enumeration value="Laser_tweezers_tus" />
+    		<enumeration value="MurM" />
+    		<enumeration value="Pins" />
+    		<enumeration value="Protein-ligation" />
+    		<enumeration value="Reaction_centre" />
+    		<enumeration value="SANS2dfirstbio" />
+    		<enumeration value="SAS_standard" />
+    		<enumeration value="Soton" />
+    		<enumeration value="Tus_labelling" />
+    		<enumeration value="kcsa" />
+    		<enumeration value="mthk" />
+    		<enumeration value="test" />
+    	</restriction>
+    </simpleType>
+    
+    <simpleType name="DnaType">
+    	<annotation>
+    		<documentation>
+    		This is based on an inspection of the xml source using
+    		the following command-line technique:
+
+			$ egrep "^.*&lt;dna&gt;.+&lt;/dna&gt;.*$" ./index.xml | sed 's/.*&lt;dna&gt;\(.*\)&lt;\/dna&gt;.*/\1/g' | sort -u
+    		</documentation>
+    	</annotation>
+    	<restriction base="string">
+    		<enumeration value="Glur0" />
+    		<enumeration value="double_stranded_linear" />
+    		<enumeration value="oligonucleotide" />
+    		<enumeration value="plasmid" />
+    	</restriction>
+    </simpleType>
+
+    <simpleType name="MaterialType">
+    	<annotation>
+    		<documentation>
+    		This is based on an inspection of the xml source using
+    		the following command-line technique:
+
+			$ egrep "^.*&lt;material&gt;.+&lt;/material&gt;.*$" ./index.xml | sed 's/.*&lt;material&gt;\(.*\)&lt;\/material&gt;.*/\1/g' | sort -u
+    		</documentation>
+    	</annotation>
+    	<restriction base="string">
+    		<enumeration value="Lottery" />
+    		<enumeration value="Powder" />
+    		<enumeration value="Solution" />
+    		<enumeration value="Suspension" />
+    	</restriction>
+    </simpleType>
+
+    <simpleType name="ProcedureType">
+    	<annotation>
+    		<documentation>
+    		This is based on an inspection of the xml source using
+    		the following command-line technique:
+
+			$ egrep "^.*&lt;procedure&gt;.+&lt;/procedure&gt;.*$" ./index.xml | sed 's/.*&lt;procedure&gt;\(.*\)&lt;\/procedure&gt;.*/\1/g' | sort -u
+    		</documentation>
+    	</annotation>
+    	<restriction base="string">
+    		<enumeration value="Chemistry" />
+    		<enumeration value="DNA_ligation" />
+    		<enumeration value="DNA_phosphorylation" />
+    		<enumeration value="Data_Analysis" />
+    		<enumeration value="Data_analysis" />
+    		<enumeration value="Data_reduction" />
+    		<enumeration value="PCR" />
+    		<enumeration value="Protein_Purification" />
+    		<enumeration value="Protein_purification" />
+    		<enumeration value="SANS" />
+    		<enumeration value="SAXS" />
+    		<enumeration value="SAXS_Lab" />
+    		<enumeration value="SDS_PAGE" />
+    		<enumeration value="Sample_Preparation" />
+    		<enumeration value="Sample_preparation" />
+    		<enumeration value="Transformation" />
+    		<enumeration value="UV-Vis" />
+    	</restriction>
+    </simpleType>
+
+    
+    <complexType name="MetadataType">
+    	<all>
+    		<element name="material" type="lnb:MaterialType" maxOccurs="1" minOccurs="0">
+    		</element>
+    		<element name="dna" type="lnb:DnaType" maxOccurs="1" minOccurs="0">
+    		</element>
+    		<element name="project" type="lnb:ProjectType" maxOccurs="1" minOccurs="0">
+    		</element>
+    		<element name="procedure" type="lnb:ProcedureType" maxOccurs="1" minOccurs="0">
+    		</element>
+    		<element name="instrument" type="lnb:InstrumentType" maxOccurs="1" minOccurs="0">
+    		</element>
+    		<element name="data_type" type="lnb:DatatypeType" maxOccurs="1" minOccurs="0">
+    		</element>
+    	</all>
+    </complexType>
+    
+
+    <simpleType name="MimetypeType">
+    	<annotation>
+    		<documentation>
+    		Supposed to match MIME types
+    		</documentation>
+    	</annotation>
+    	<restriction base="string">
+    		<pattern value="(text/(html|xml)|image/png)" />
+    	</restriction>
+    </simpleType>
+
+    <complexType name="FormatType">
+    	<annotation>
+    		<documentation>
+    			From the looks of thing this should be a MIME type?
+    		</documentation>
+    	</annotation>
+    	<simpleContent>
+    		<extension base="anyURI">
+    			<attribute name="type" type="lnb:MimetypeType"></attribute>
+    		</extension>
+    	</simpleContent>
+    </complexType>
 </schema>
