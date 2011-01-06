@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" 
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:xsi="http://www.w3.org/2000/10/XMLSchema-instance"
     xmlns:lnb="http://biolab.isis.rl.ac.uk/camerons_labblog"
+    xmlns:lnbrdf="http://biolab.isis.rl.ac.uk/camerons_labblog/rdf"
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-    xmlns:xsi = "http://www.w3.org/2000/10/XMLSchema-instance"
 	xmlns:dc="http://purl.org/dc/elements/1.1/"
     xmlns="http://purl.org/rss/1.0/">
 	
@@ -16,9 +17,17 @@
 
 			<xsl:element name="channel">
 			<xsl:attribute name="rdf:about">http://biolab.isis.rl.ac.uk/camerons_labblog/index.xml</xsl:attribute>
-				<xsl:element name="title">Cameron's Labblog</xsl:element>
-				<xsl:element name="link">http://biolab.isis.rl.ac.uk/camerons_labblog/index.xml</xsl:element>
-				<xsl:element name="description"><!-- TODO: work out what to put into here --></xsl:element>
+				<xsl:element name="title">Cameron's LaBLog - blogs@BioLab</xsl:element>
+				<xsl:element name="link">http://biolab.isis.rl.ac.uk/camerons_labblog</xsl:element>
+				<xsl:element name="description">The online open laboratory notebook of Cameron Neylon on blogs@BioLab</xsl:element>
+				<xsl:element name="lnbrdf:from">
+					<xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#dateTime</xsl:attribute>
+					<xsl:value-of select="/lnb:posts/@from" />
+				</xsl:element>
+				<xsl:element name="lnbrdf:to">
+					<xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#dateTime</xsl:attribute>
+					<xsl:value-of select="/lnb:posts/@to" />
+				</xsl:element>
 				<xsl:element name="items">
 					<xsl:element name="rdf:Seq">
 						<xsl:apply-templates select="/lnb:posts/lnb:post" mode="li" />
