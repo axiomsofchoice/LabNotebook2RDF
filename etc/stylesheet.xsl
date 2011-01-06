@@ -3,7 +3,7 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:xsi="http://www.w3.org/2000/10/XMLSchema-instance"
     xmlns:lnb="http://biolab.isis.rl.ac.uk/camerons_labblog"
-    xmlns:lnbrdf="http://biolab.isis.rl.ac.uk/camerons_labblog/rdf"
+    xmlns:labblog="http://biolab.isis.rl.ac.uk/camerons_labblog/rdf"
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 	xmlns:dc="http://purl.org/dc/elements/1.1/"
     xmlns="http://purl.org/rss/1.0/">
@@ -20,11 +20,11 @@
 				<xsl:element name="title">Cameron's LaBLog - blogs@BioLab</xsl:element>
 				<xsl:element name="link">http://biolab.isis.rl.ac.uk/camerons_labblog</xsl:element>
 				<xsl:element name="description">The online open laboratory notebook of Cameron Neylon on blogs@BioLab</xsl:element>
-				<xsl:element name="lnbrdf:from">
+				<xsl:element name="labblog:from">
 					<xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#dateTime</xsl:attribute>
 					<xsl:value-of select="/lnb:posts/@from" />
 				</xsl:element>
-				<xsl:element name="lnbrdf:to">
+				<xsl:element name="labblog:to">
 					<xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#dateTime</xsl:attribute>
 					<xsl:value-of select="/lnb:posts/@to" />
 				</xsl:element>
@@ -67,11 +67,76 @@
 				<xsl:text>http://biolab.isis.rl.ac.uk/uri/</xsl:text>
 				<xsl:text><xsl:value-of select="./lnb:id" /></xsl:text>
 			</xsl:element>
-			<xsl:element name="dc:date"><xsl:value-of select="./lnb:datestamp" /></xsl:element>
+			<!-- Use Dublin Core wher possible -->
+			<xsl:element name="dc:date">
+				<xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#dateTime</xsl:attribute>
+				<xsl:value-of select="./lnb:datestamp" />
+			</xsl:element>
 			<xsl:element name="description">
 				<xsl:attribute name="rdf:parseType">Literal</xsl:attribute>
 				<xsl:value-of select="./lnb:html" />
 			</xsl:element>
+			<!-- Compose a DC identifier based on the two ids given in the original XML -->
+			<xsl:element name="dc:identifier">
+				<xsl:attribute name="rdf:datatype">labblog:idRid</xsl:attribute>
+				<xsl:value-of select="/lnb:posts/@id" />
+				<xsl:text>::</xsl:text>
+				<xsl:value-of select="/lnb:posts/@rid" />
+			</xsl:element>
+			<!-- title already taken care of  -->
+			<xsl:element name="labblog:section">
+				<xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#string</xsl:attribute>
+				<xsl:value-of select="/lnb:posts/@from" />
+			</xsl:element>
+			<!-- labblog specific metadata about this item -->
+			<!-- <xsl:element name="labblog:from">
+				<xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#dateTime</xsl:attribute>
+				<xsl:value-of select="/lnb:posts/@from" />
+			</xsl:element>  -->
+			<xsl:element name="labblog:content">
+				<xsl:attribute name="rdf:parseType">Literal</xsl:attribute>
+				<xsl:value-of select="./lnb:content" />
+			</xsl:element>
+			<!-- <xsl:element name="labblog:from">
+				<xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#dateTime</xsl:attribute>
+				<xsl:value-of select="/lnb:posts/@from" />
+			</xsl:element>  -->
+			<!-- <xsl:element name="labblog:from">
+				<xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#dateTime</xsl:attribute>
+				<xsl:value-of select="/lnb:posts/@from" />
+			</xsl:element>  -->
+			<!-- <xsl:element name="labblog:from">
+				<xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#dateTime</xsl:attribute>
+				<xsl:value-of select="/lnb:posts/@from" />
+			</xsl:element>  -->
+			<!-- <xsl:element name="labblog:from">
+				<xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#dateTime</xsl:attribute>
+				<xsl:value-of select="/lnb:posts/@from" />
+			</xsl:element>  -->
+			<!-- <xsl:element name="labblog:from">
+				<xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#dateTime</xsl:attribute>
+				<xsl:value-of select="/lnb:posts/@from" />
+			</xsl:element>  -->
+			<!-- <xsl:element name="labblog:from">
+				<xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#dateTime</xsl:attribute>
+				<xsl:value-of select="/lnb:posts/@from" />
+			</xsl:element>  -->
+			<!-- <xsl:element name="labblog:from">
+				<xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#dateTime</xsl:attribute>
+				<xsl:value-of select="/lnb:posts/@from" />
+			</xsl:element>  -->
+			<!-- <xsl:element name="labblog:from">
+				<xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#dateTime</xsl:attribute>
+				<xsl:value-of select="/lnb:posts/@from" />
+			</xsl:element>  -->
+			<!-- <xsl:element name="labblog:from">
+				<xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#dateTime</xsl:attribute>
+				<xsl:value-of select="/lnb:posts/@from" />
+			</xsl:element>  -->
+			<!-- <xsl:element name="labblog:from">
+				<xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#dateTime</xsl:attribute>
+				<xsl:value-of select="/lnb:posts/@from" />
+			</xsl:element>  -->
 		</xsl:element>
 	</xsl:template>
 </xsl:stylesheet>
