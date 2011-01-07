@@ -43,7 +43,7 @@
         <rdf:li resource="http://example.com/2002/09/01/"/>
         -->
 		<xsl:element name="rdf:li">
-			<xsl:attribute name="resource">
+			<xsl:attribute name="rdf:resource">
 				<xsl:text>http://biolab.isis.rl.ac.uk/uri/</xsl:text>
 				<xsl:text><xsl:value-of select="./lnb:id" /></xsl:text>
 			</xsl:attribute>
@@ -62,45 +62,41 @@
 			<xsl:text>http://biolab.isis.rl.ac.uk/uri/</xsl:text>
 			<xsl:text><xsl:value-of select="./lnb:id" /></xsl:text>
 		</xsl:attribute>
-			<xsl:element name="title"><xsl:value-of select="./lnb:title" /></xsl:element>
+			<!-- Compose a DC identifier based on the two ids given in the original XML -->
+			<xsl:element name="dc:identifier">
+				<xsl:attribute name="rdf:datatype">labblog:idRid</xsl:attribute>
+				<xsl:value-of select="./lnb:id" />
+				<xsl:text>::</xsl:text>
+				<xsl:value-of select="./lnb:rid" />
+			</xsl:element>
+			<!-- Going to assume we can construct a URI in the following way -->
 			<xsl:element name="link">
 				<xsl:text>http://biolab.isis.rl.ac.uk/uri/</xsl:text>
 				<xsl:text><xsl:value-of select="./lnb:id" /></xsl:text>
 			</xsl:element>
-			<!-- Use Dublin Core wher possible -->
-			<xsl:element name="dc:date">
-				<xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#dateTime</xsl:attribute>
-				<xsl:value-of select="./lnb:datestamp" />
+			<xsl:element name="title"><xsl:value-of select="./lnb:title" /></xsl:element>
+			<!-- labblog specific metadata about this item -->
+			<xsl:element name="labblog:section">
+				<xsl:attribute name="rdf:resource">
+					<xsl:text>http://biolab.isis.rl.ac.uk/camerons_labblog/rdf#</xsl:text>
+					<xsl:value-of select="./lnb:section" />
+				</xsl:attribute>
+			</xsl:element>
+			<xsl:element name="dc:creator">
+				<xsl:attribute name="rdf:parseType">Literal</xsl:attribute>
+				<xsl:apply-templates select="./lnb:author" />
 			</xsl:element>
 			<xsl:element name="description">
 				<xsl:attribute name="rdf:parseType">Literal</xsl:attribute>
-				<xsl:value-of select="./lnb:html" />
-			</xsl:element>
-			<!-- Compose a DC identifier based on the two ids given in the original XML -->
-			<xsl:element name="dc:identifier">
-				<xsl:attribute name="rdf:datatype">labblog:idRid</xsl:attribute>
-				<xsl:value-of select="/lnb:posts/@id" />
-				<xsl:text>::</xsl:text>
-				<xsl:value-of select="/lnb:posts/@rid" />
-			</xsl:element>
-			<!-- title already taken care of  -->
-			<xsl:element name="labblog:section">
-				<xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#string</xsl:attribute>
-				<xsl:value-of select="/lnb:posts/@from" />
-			</xsl:element>
-			<!-- labblog specific metadata about this item -->
-			<!-- <xsl:element name="labblog:from">
-				<xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#dateTime</xsl:attribute>
-				<xsl:value-of select="/lnb:posts/@from" />
-			</xsl:element>  -->
-			<xsl:element name="labblog:content">
-				<xsl:attribute name="rdf:parseType">Literal</xsl:attribute>
 				<xsl:value-of select="./lnb:content" />
 			</xsl:element>
-			<!-- <xsl:element name="labblog:from">
+			<!-- The html element is just reconsistuted from the other data -->
+			<!-- Use Dublin Core wher possible -->
+			<xsl:element name="dc:date">
+				<!-- Will ignore the other timestamp since it's apparently identical -->
 				<xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#dateTime</xsl:attribute>
-				<xsl:value-of select="/lnb:posts/@from" />
-			</xsl:element>  -->
+				<xsl:value-of select="./lnb:datestamp" />
+			</xsl:element>
 			<!-- <xsl:element name="labblog:from">
 				<xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#dateTime</xsl:attribute>
 				<xsl:value-of select="/lnb:posts/@from" />
